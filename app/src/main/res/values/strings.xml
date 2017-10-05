@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name" translatable="false">MultiQuiz Pro</string>
+    <string name="question">Question</string>
+    <string name="check">Check</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">Incorrect!</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+    <string name="prev">Previous</string>
+
+
+    <array name="all_questions">
+        <item>Quina es la capital de Catalunya?;Girona;Lleida;*Barcelona;Tarragona</item>
+        <item>Qui es mes pesat?;*Tambor;Anna;Gloria;Tu</item>
+        <item>En quina estació estem?;Terrassa Est;Primavera;*Vallparadis;Les 4 de Vivaldi</item>
+        <item>Quin dia es avui?;*Dilluns;Dimarts;Dimecres;Dijous</item>
+    </array>
+</resources>
