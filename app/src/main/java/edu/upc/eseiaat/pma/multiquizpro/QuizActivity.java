@@ -27,6 +27,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        // Comentari
         text_question = (TextView) findViewById(R.id.text_question);
         all_questions = getResources().getStringArray(R.array.all_questions);
         grup = (RadioGroup) findViewById(R.id.answer_group);
