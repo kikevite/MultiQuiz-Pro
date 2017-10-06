@@ -1,5 +1,7 @@
 package edu.upc.eseiaat.pma.multiquizpro;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,26 +25,55 @@ public class QuizActivity extends AppCompatActivity {
     private int[] answer;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.i("lifecycle","onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+        outState.putInt("correct_answer",correct_answer);
+        outState.putInt("current_question",current_question);
+        outState.putIntArray("answer",answer);
+        outState.putBooleanArray("answer_is_correct",answer_is_correct);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("lifecycle","onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.i("lifecycle","onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i("lifecycle","onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("lifecycle","onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        // Comentari
         text_question = (TextView) findViewById(R.id.text_question);
         all_questions = getResources().getStringArray(R.array.all_questions);
         grup = (RadioGroup) findViewById(R.id.answer_group);
         btn_next = (Button) findViewById(R.id.btn_check);
         btn_prev = (Button) findViewById(R.id.btn_prev);
 
-        answer_is_correct=new boolean[all_questions.length];
-        answer = new int[all_questions.length];
+        if (savedInstanceState==null){startOver();}
+        else {
+            correct_answer=savedInstanceState.getInt("correct_answer");
+            current_question=savedInstanceState.getInt("current_question");
+            answer=savedInstanceState.getIntArray("answer");
+            answer_is_correct=savedInstanceState.getBooleanArray("answer_is_correct");
 
-        for (int i =0; i<answer.length ;i++) {
-            answer[i]=-1;
+            showquestion();
         }
 
-        current_question=0;
-        showquestion();
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +93,7 @@ public class QuizActivity extends AppCompatActivity {
                     showquestion();
                 }
                 else {
-                    int correctas=0, incorrectas=0;
-                    for (boolean b : answer_is_correct) {
-                        if (b) {correctas++;}
-                        else {incorrectas++;}
-                    }
-                    String resultado = String.format("Correctes: %d - Incorrectes: %d", correctas,incorrectas);
-                    Toast.makeText(QuizActivity.this, resultado, Toast.LENGTH_SHORT).show();
-                    //finish();
+                    checkResults();
 
                 }
                 /*
@@ -89,6 +113,46 @@ public class QuizActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startOver() {
+        answer_is_correct=new boolean[all_questions.length];
+        answer = new int[all_questions.length];
+
+        for (int i =0; i<answer.length ;i++) {
+            answer[i]=-1;
+        }
+
+        current_question=0;
+        showquestion();
+    }
+
+    private void checkResults() {
+        int correctas=0, incorrectas=0, nocontestades=0;
+        for (int i=0; i<all_questions.length; i++) {
+            if (answer_is_correct[i]) {correctas++;}
+            else if (answer[i]==-1) {nocontestades++;}
+            else {incorrectas++;}
+        }
+        String message = String.format("Correctes: %d\nIncorrectes: %d\nNo contestades: %d", correctas,incorrectas,nocontestades);
+        //Toast.makeText(QuizActivity.this, resultado, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.results);
+        builder.setMessage(message);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.finish, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.start_over, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startOver();
+            }
+        });
+        builder.create().show();
     }
 
     private void checkAnswer() {

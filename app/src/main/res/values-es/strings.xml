@@ -7,4 +7,6 @@
     <string name="next">Siguiente</string>
     <string name="finish">Acabar</string>
     <string name="prev">Atrás</string>
+    <string name="results">Resultados</string>
+    <string name="start_over">Volver a empezar</string>
 </resources>
