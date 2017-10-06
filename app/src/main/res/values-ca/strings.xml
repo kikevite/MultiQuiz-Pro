@@ -9,4 +9,7 @@
     <string name="prev">Enrere</string>
     <string name="results">Resultats</string>
     <string name="start_over">Torna a començar</string>
+    <string name="total_cor">Correctes</string>
+    <string name="total_inc">Incorrectes</string>
+    <string name="total_not_ans">No contestades</string>
 </resources>

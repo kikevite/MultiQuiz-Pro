@@ -8,7 +8,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
-                tools:context="edu.upc.eseiaat.pma.quiz.QuizActivity">
+                tools:context="edu.upc.eseiaat.pma.multiquizpro.QuizActivity">
 
     <TextView
         android:id="@+id/label_question"
@@ -87,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/answer_group"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
@@ -95,10 +95,9 @@
         android:id="@+id/btn_prev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btn_check"
-        android:layout_alignBottom="@+id/btn_check"
+        android:text="@string/prev"
+        android:layout_below="@+id/answer_group"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="@string/prev"/>
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

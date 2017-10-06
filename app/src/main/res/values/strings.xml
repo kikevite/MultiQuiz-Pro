@@ -9,6 +9,9 @@
     <string name="prev">Previous</string>
     <string name="results">Results</string>
     <string name="start_over">Start Over</string>
+    <string name="total_cor">Corrects</string>
+    <string name="total_inc">Incorrects</string>
+    <string name="total_not_ans">Not answered</string>
 
 
     <array name="all_questions">

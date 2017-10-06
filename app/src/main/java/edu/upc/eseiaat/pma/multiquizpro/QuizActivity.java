@@ -10,11 +10,10 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
-    private int ids_answers[]={ R.id.answer1, R.id.answer2, R.id.answer3, R.id.answer4 };
+    private int ids_answers[]={R.id.answer1, R.id.answer2, R.id.answer3, R.id.answer4};
     private int correct_answer;
     private String[] all_questions;
     private int current_question;
@@ -64,7 +63,9 @@ public class QuizActivity extends AppCompatActivity {
         btn_next = (Button) findViewById(R.id.btn_check);
         btn_prev = (Button) findViewById(R.id.btn_prev);
 
-        if (savedInstanceState==null){startOver();}
+        if (savedInstanceState==null){
+            startOver();
+        }
         else {
             correct_answer=savedInstanceState.getInt("correct_answer");
             current_question=savedInstanceState.getInt("current_question");
@@ -74,33 +75,17 @@ public class QuizActivity extends AppCompatActivity {
             showquestion();
         }
 
-
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkAnswer();
-
-                /*
-                if (respuesta==correct_answer){
-                    Toast.makeText(QuizActivity.this, R.string.correct, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(QuizActivity.this, R.string.incorrect, Toast.LENGTH_SHORT).show();
-                } */
-
                 if (current_question<all_questions.length-1) {
                     current_question++;
                     showquestion();
                 }
                 else {
                     checkResults();
-
                 }
-                /*
-                for (int i=0; i<answer_is_correct.length;i++){
-                    Log.i("Kike", String.format("Resposta %d: %d (%b)", i, answer[i], answer_is_correct[i]));
-                }
-                */
             }
         });
 
@@ -109,7 +94,8 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 checkAnswer();
                 if (current_question>0) {
-                    current_question--; showquestion();
+                    current_question--;
+                    showquestion();
                 }
             }
         });
@@ -118,11 +104,9 @@ public class QuizActivity extends AppCompatActivity {
     private void startOver() {
         answer_is_correct=new boolean[all_questions.length];
         answer = new int[all_questions.length];
-
         for (int i =0; i<answer.length ;i++) {
             answer[i]=-1;
         }
-
         current_question=0;
         showquestion();
     }
@@ -134,18 +118,19 @@ public class QuizActivity extends AppCompatActivity {
             else if (answer[i]==-1) {nocontestades++;}
             else {incorrectas++;}
         }
-        String message = String.format("Correctes: %d\nIncorrectes: %d\nNo contestades: %d", correctas,incorrectas,nocontestades);
-        //Toast.makeText(QuizActivity.this, resultado, Toast.LENGTH_SHORT).show();
+        String message = getString(R.string.total_cor)+": "+correctas+"\n"+getString(R.string.total_inc)+": "+incorrectas+"\n"+getString(R.string.total_not_ans)+": "+nocontestades;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.results);
         builder.setMessage(message);
         builder.setCancelable(false);
+
         builder.setPositiveButton(R.string.finish, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         });
+
         builder.setNegativeButton(R.string.start_over, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -158,11 +143,9 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer() {
         int id= grup.getCheckedRadioButtonId();
         int ans=-1;
-
         for (int i=0; i<ids_answers.length; i++) {
             if (ids_answers[i]==id) {ans=i;}
         }
-
         answer_is_correct[current_question]=(ans==correct_answer);
         answer[current_question]=ans;
     }
@@ -170,28 +153,20 @@ public class QuizActivity extends AppCompatActivity {
     private void showquestion() {
         String q = all_questions[current_question];
         String[] parts = q.split(";");
-
         grup.clearCheck();
-
         text_question.setText(parts[0]);
-
         for (int i=0; i<ids_answers.length; i++) {
             RadioButton rb = (RadioButton) findViewById(ids_answers[i]);
             String ans = parts[i+1];
-
             if(ans.charAt(0)=='*') {
                 correct_answer=i;
                 ans=ans.substring(1);
             }
-
             rb.setText(ans);
-
             if(answer[current_question]== i){rb.setChecked(true);}
         }
-
         if (current_question==0){btn_prev.setVisibility(View.GONE);}
         else {btn_prev.setVisibility(View.VISIBLE);}
-
         if (current_question==all_questions.length-1) {btn_next.setText(R.string.finish);}
         else {btn_next.setText(R.string.next);}
     }
